@@ -1,0 +1,62 @@
+═════════════════════════════════════════════════════════════════
+  INSTRUCCIONES PARA AGREGAR OBSERVACIONES A TUS EQUIPOS
+═════════════════════════════════════════════════════════════════
+
+PASO 1: Abre tu base de datos en Supabase
+- Ve a SQL Editor en Supabase
+- Crea una nueva query
+
+PASO 2: Copia y pega este comando para agregar observaciones a un equipo:
+
+UPDATE equipos 
+SET marca_modelo = 'Escribe aquí las observaciones del equipo'
+WHERE codigo_equipo = 'TU-CODIGO-AQUI';
+
+EJEMPLO REAL:
+UPDATE equipos 
+SET marca_modelo = 'HP EliteBook 840 - Pantalla con rayones, teclado pegajoso'
+WHERE codigo_equipo = 'PCR-LAP24812112';
+
+───────────────────────────────────────────────────────────────────
+
+PASO 3 (OPCIONAL): Si quieres agregar observaciones a TODOS tus equipos de golpe:
+
+UPDATE equipos 
+SET marca_modelo = CASE codigo_equipo
+    WHEN 'PCR-LAP24812112' THEN 'HP EliteBook - Pantalla rayada'
+    WHEN 'PCR-LAP25114212' THEN 'Dell Latitude - Teclado con teclas sueltas'
+    WHEN 'PCR-LAP22834842' THEN 'Lenovo ThinkPad - Batería defectuosa'
+    -- Agrega más líneas aquí para cada equipo
+    ELSE marca_modelo  -- Mantener el valor actual si no coincide
+END
+WHERE codigo_equipo IN (
+    'PCR-LAP24812112',
+    'PCR-LAP25114212',
+    'PCR-LAP22834842'
+    -- Agrega más códigos aquí
+);
+
+───────────────────────────────────────────────────────────────────
+
+PASO 4: Verificar que funcionó
+
+SELECT codigo_equipo, marca_modelo 
+FROM equipos 
+WHERE marca_modelo IS NOT NULL 
+ORDER BY codigo_equipo;
+
+───────────────────────────────────────────────────────────────────
+
+PASO 5: Recarga tu página con Ctrl+Shift+R
+
+Ahora deberías ver el ícono del ojo 👁️ en los equipos con observaciones.
+
+═════════════════════════════════════════════════════════════════
+
+NOTAS IMPORTANTES:
+✓ El campo "marca_modelo" en la BD = "Observaciones" en la interfaz
+✓ Si marca_modelo tiene texto → aparece el ojo 👁️
+✓ Si marca_modelo está vacío → aparece un guion "-"
+✓ Para eliminar observaciones: UPDATE equipos SET marca_modelo = NULL WHERE codigo_equipo = 'XXX';
+
+═════════════════════════════════════════════════════════════════
